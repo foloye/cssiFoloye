@@ -29,39 +29,29 @@ function draw() {
 }
 
 function parseCatInfo(catString) {
-  let catJSON = JSON.parse(catString);
   let motherNames = [];
   let kittenNames = [];
-  let mykittens = [];
+  let kittens = [];
   let toys = {};
-  // Loop over the mother cats
-  console.log(catJSON);
-  for (const cat of catJSON) {
-    console.log(cat);
-    // for each mother cat, store the name
+  let catJSON = JSON.parse(catString);
+  for (let i = 0; i < catJSON.length; i++) {
+    let cat = catJSON[i];
     motherNames.push(cat.name);
-    // and store each kitten in an array
     for (const kitten of cat.kittens) {
-      console.log(kitten);
-      mykittens.push(kitten);
+      kittens.push(kitten);
     }
   }
-  // For each kitten
-  for (const mykitten of mykittens) {
-    // store the kitten name
-    kittenNames.push(mykitten.name);
-    // Build a map of toys --> count
-    if (toys[mykitten.toy] === undefined) {
-      toys[mykitten.toy] = 1;
+  for (const kitten of kittens) {
+    kittenNames.push(kitten.name);
+    if (toys[kitten.toy] === undefined) {
+      toys[kitten.toy] = 1;
     } else {
-      toys[mykitten.toy]++;
+      toys[kitten.toy]++;
     }
   }
-  
+  for (const [key, value] of Object.entries(toys)) {
+    toyInfo += `${value} kittens like ${key}, `;
+  }
   motherInfo += motherNames.join(", ");
   kittenInfo += kittenNames.join(", ");
-  
-  for (const [key, value] of Object.entries(toys)) {
-    toyInfo += value + " kittens like " + key + "\n";
-  }
 }
