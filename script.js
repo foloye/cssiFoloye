@@ -1,8 +1,11 @@
-/* global createCanvas, background, ellipse, rect, noFill, strokeWeight, stroke */
+/* global createCanvas, background, ellipse, rect,colorMode,HSB, noFill, strokeWeight, stroke */
 
+var c;
 function setup() {
   // Code here runs only once
   createCanvas(800, 600);
+  colorMode(HSB, 360,100,100);
+  c=0;
 }
 
 function draw() {
@@ -14,22 +17,25 @@ function draw() {
   strokeWeight(5);
   
   //  blue ring
-  stroke(0, 133, 199);
+  stroke(c, 100, 100);
   ellipse(50, 50, 50, 50);
   
   //  yellow ring
-  stroke(244, 195, 0);
+  stroke(c, 60, 90);
   ellipse(80, 80, 50, 50);
   
   // first black ring
-  stroke(0, 0, 0);
+  stroke(c, 80, 44);
   ellipse(110, 50, 50, 50);
 
   // green ring
-  stroke(0, 159, 61);
+  stroke(c, 30, 100);
   ellipse(140, 80, 50, 50);
   
   // red ring
-  stroke(223, 0, 36)
+  stroke(c, 100, 50)
   ellipse(170, 50, 50, 50);
+  
+  c+=1;
+  c = c%360;
 }
