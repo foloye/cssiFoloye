@@ -1,78 +1,54 @@
-// Be sure to name any p5.js functions we use in the global so Glitch can recognize them.
-// Add to this list as you consult the p5.js documentation for other functions. 
-/* global createCanvas, colorMode, HSB, width, height, random, background, fill, color, random,
-          rect, ellipse, stroke, image, loadImage, collideCircleCircle, collideRectCircle, text, 
-          mouseX, mouseY, strokeWeight, line, mouseIsPressed, windowWidth, windowHeight, noStroke, 
-          keyCode, UP_ARROW,triangle, LEFT_ARROW, RIGHT_ARROW, DOWN_ARROW, textSize, sqrt, round */
+/* global createCanvas, background, loadImage, image, width, height, circle */
 
-let backgroundColor, spherePosition, rectPosition, triPo
+let dvdImage,dkImage,kingImage, y2, x1,y1, x, xVelocity, y, yVelocity, logoWidth, logoHeight;
 
-function setup() {
-  // Canvas & color settings
-  createCanvas(500, 400);
-  colorMode(HSB, 360, 100, 100);
-  backgroundColor = 95;
-  // This variable contains a JSON object
-  spherePosition = {
-    "x": 100,
-    "y": 100
-  };
-  rectPosition = {
-    "x": 130,
-    "y": 140
-  };
-  triPo = {
-    "x1": 160,
-    "x2": 180,
-    "x3":200,
-    "y1":180,
-    "y2":200,
-    "y3":220
-  };
-}
-
-function draw() {
-  background(backgroundColor);
-  ellipse(spherePosition.x, spherePosition.y, 20, 20);
-  rect(rectPosition.x, rectPosition.y, 20, 20);
-  line(spherePosition.x, spherePosition.y, rectPosition.x, rectPosition.y);
-  triangle(triPo.x1,triPo.y1,triPo.x2,triPo.y2,triPo.x3,triPo.y3);
+function setup(){
+  createCanvas(800, 600);
+  // We only want to load the logo once.
+  dvdImage = loadImage("https://lh3.googleusercontent.com/Sk-WH6XpG8hgyEvzut6BCfOT6K4_tIOV0ZF9vHS0oWWSB0uvayJT9cPkz50hTCNKP48Jgx-nRiYkn3I82bfXUYqe1slAzArmnw=w1600-rj-nu-e365");
+  //dkImage = loadImage("https://qph.fs.quoracdn.net/main-qimg-c6156b58f7d46fc4e9ee478c8b01fd15");
+  //kingImage = loadImage("https://qph.fs.quoracdn.net/main-qimg-c6156b58f7d46fc4e9ee478c8b01fd15");
+  x = 50;
+  xVelocity = 2;
+  y = 50;
+  yVelocity = 2;
+  logoWidth = 25;
+  logoHeight = 100;
+  x1 = 300;
+  y1 = 250;
   
-  let distance1 = computeDistance(spherePosition, rectPosition);
-  text(`The circle and sphere are ${round(distance1)} units apart.`, 20, 20);
+  y2 = 300;
   
-  let mousePosition = {
-    "x": mouseX,
-    "y": mouseY
-  };
-
-  let distance2 = computeDistance(spherePosition, mousePosition);
-  let distanceDescription = computeCategoryOfDistance(spherePosition, mousePosition);
-  text(`The circle and your mouse are ${round(distance2)} units apart; you're ${distanceDescription}.`, 20, 40);
 }
 
-function mousePressed() {
-  spherePosition.x = random(width);
-  spherePosition.y = random(height);
-}
+function draw(){
+  background(95);
 
-function computeDistance(point1, point2) {
-  let deltaX = point1.x - point2.x;
-  let deltaY = point1.y - point2.y;
-  let distance = sqrt((deltaX ** 2) + (deltaY ** 2));
-  return distance;  // returns a number
-}
-
-function computeCategoryOfDistance(point1, point2) {
-  let distance = computeDistance(point1, point2);
-  if (distance > 200) {
-    backgroundColor = color(240, 10, 100);
-    return "cold";
-  } else if (distance > 50) {
-    backgroundColor = color(120, 10, 100);
-    return "warmer";
-  } else {
-    backgroundColor = color(0, 10, 100);
-    return "red hot";
+  // if the logo hits border, change directions.
+  if (x >= (width - logoWidth) || x <= 0){
+    xVelocity = xVelocity * -1;
+    // xVelocity = -xVelocity;
   }
+  // if the logo hits border, change directions.
+  if (y >= (height - logoHeight) || y<= 0){
+    yVelocity = yVelocity * -1;
+  }
+
+  
+  x = x + xVelocity;
+  y = y + yVelocity;
+  
+  x1= x1+ xVelocity;
+  y1 = y1 + yVelocity;
+  y2 = y2 + yVelocity;
+  
+  // Draw the logo at the new position.
+  image(dvdImage, x, y, logoWidth, logoHeight);
+ // image(dkImage, x1, y1, logoWidth, logoHeight);
+  
+}
+
+function mousePressed(){
+  xVelocity = 0;
+  yVelocity = 0;
 }
