@@ -1,67 +1,35 @@
-// Be sure to name any p5.js functions we use in the global so Glitch can recognize them.
-// Add to this list as you consult the p5.js documentation for other functions.
-/* global createCanvas, colorMode, HSB, width, height, random, background, fill, color, random,
-          rect, ellipse, stroke, image, loadImage, collideCircleCircle, collideRectCircle, text, 
-          mouseX, mouseY, strokeWeight, line, mouseIsPressed, windowWidth, windowHeight, noStroke, 
-          keyCode, UP_ARROW, LEFT_ARROW, RIGHT_ARROW, DOWN_ARROW, textSize */
-
-let backgroundColor;
-let motherInfo = "The mother cats are named ";
-let kittenInfo = "The kittens are named ";
-let toyInfo = "Toys: ";
+/* global createCanvas, background, ellipse, rect, noFill, strokeWeight, stroke */
 
 function setup() {
-  // Canvas & color settings
-  createCanvas(400, 400);
-  colorMode(HSB, 360, 100, 100);
-  backgroundColor = 95;
-
-  fetch("cats.json")
-    .then(response => response.text())
-    .then(text => parseCatInfo(text));
+  // Code here runs only once
+  createCanvas(800, 600);
 }
 
 function draw() {
-  background(backgroundColor);
-  text(motherInfo, 20, 20);
-  text(kittenInfo, 20, 40);
-  text(toyInfo, 20, 60);
-}
+  // Code here runs continuously
+  background(220);
+  
+  // Brush settings
+  noFill();
+  strokeWeight(5);
+  
+  //  blue ring
+  stroke(0, 133, 199);
+  ellipse(50, 50, 50, 50);
+  
+  //  yellow ring
+  stroke(244, 195, 0);
+  ellipse(80, 80, 50, 50);
+  
+  // first black ring
+  stroke(0, 0, 0);
+  ellipse(110, 50, 50, 50);
 
-function parseCatInfo(catString) {
-  let catJSON = JSON.parse(catString);
-  let motherNames = [];
-  let kittenNames = [];
-  let mykittens = [];
-  let toys = {};
-  // Loop over the mother cats
-  console.log(catJSON);
-  for (const cat of catJSON) {
-    console.log(cat);
-    // for each mother cat, store the name
-    motherNames.push(cat.name);
-    // and store each kitten in an array
-    for (const kitten of cat.kittens) {
-      console.log(kitten);
-      mykittens.push(kitten);
-    }
-  }
-  // For each kitten
-  for (const mykitten of mykittens) {
-    // store the kitten name
-    kittenNames.push(mykitten.name);
-    // Build a map of toys --> count
-    if (toys[mykitten.toy] === undefined) {
-      toys[mykitten.toy] = 1;
-    } else {
-      toys[mykitten.toy]++;
-    }
-  }
+  // green ring
+  stroke(0, 159, 61);
+  ellipse(140, 80, 50, 50);
   
-  motherInfo += motherNames.join(", ");
-  kittenInfo += kittenNames.join(", ");
-  
-  for (const [key, value] of Object.entries(toys)) {
-    toyInfo += value + " kittens like " + key + "\n";
-  }
+  // red ring
+  stroke(223, 0, 36)
+  ellipse(170, 50, 50, 50);
 }
