@@ -1,75 +1,45 @@
-// Be sure to name any p5.js functions we use in the global so Glitch can recognize them.
-// Add to this list as you consult the p5.js documentation for other functions. 
-/* global createCanvas, colorMode, HSB, width, height, random, background, fill, color, random,
-          rect, ellipse, stroke, image, loadImage, collideCircleCircle, collideRectCircle, text, 
-          mouseX, mouseY, strokeWeight, line, mouseIsPressed, windowWidth, windowHeight, noStroke, 
-          keyCode,keyIsPressed,key, UP_ARROW, LEFT_ARROW, RIGHT_ARROW, DOWN_ARROW, textSize */
+/* global createCanvas, background, loadImage, image, width, height */
 
-let dots;
-let bgColor = 220;
-function setup() {
-  let numDots = 25;
-  createCanvas(windowWidth - 20, windowHeight - 20);
-  colorMode(HSB, 360, 100, 100);
-  dots = [];
-  for (let i = 0; i < numDots; i++){
-    dots.push(new BouncyDot);
-  }
+let dvdImage, x, xVelocity, y, yVelocity, logoWidth, logoHeight;
+
+function setup(){
+  createCanvas(800, 600);
+  // We only want to load the logo once.
+  dvdImage = loadImage("https://cdn.glitch.com/eaea72a4-ac6d-4777-b76e-f37d75959aa5%2Fdvd.jpeg?1515761833387");
+  x = 50;
+  xVelocity = 1;
+  y = 50;
+  yVelocity = 1;
+  logoWidth = 200;
+  logoHeight = 150;
 }
 
-function draw() {
-  background(bgColor, 0, 80);
-  for (let i = 0; i < dots.length; i++){
-    dots[i].float();
-    dots[i].display();
+function draw(){
+  background(220);
+
+  // if the logo hits border, change directions.
+  // if (x >= (width - logoWidth) || x <= 0){
+  //   xVelocity = xVelocity * -1;
+  //   // xVelocity = -xVelocity;
+  // }
+  // // if the logo hits border, change directions.
+  // if (y >= (height - logoHeight) || y<= 0){
+  //   yVelocity = yVelocity * -1;
+  // }
+  if (y < height){
+    y += yVelocity;
   }
+
   
+  x = x + xVelocity;
+  y = y + yVelocity;
+  // Draw the logo at the new position.
+  image(dvdImage, x, y, logoWidth, logoHeight);
 }
-
-function mousePressed() {
-  // We'll use this for console log statements only.
-  dots.push(new BouncyDot());
-  console.log(dots);
+function keyPressed(){
+   y-= 10; 
+   yVelocity = 0;
 }
-
-class BouncyDot {
-  constructor() {
-    // Randomly generate position
-    this.x = random(width);
-    this.y = random(height);
-    // Randomly generate radius
-    this.r = random(5, 12);
-    // Randomly generate color
-    this.color = color(random(360), 80, 70);
-    // Randomly generate a master velocity (broken into components)...
-    this.masterXvelocity = random(0.5, 3);
-    this.masterYvelocity = random(0.5, 3);
-    // ...and use those as starting velocities.
-    this.xVelocity = this.masterXvelocity;
-    this.yVelocity = this.masterYvelocity;
-  }
-
-  float() {
-    this.x += this.xVelocity;
-    this.y += this.yVelocity;
-    // Standard bounce code - like the DVD logo, but for spheres.
-    if (this.x + this.r > width) {
-      this.xVelocity = -1 * this.masterXvelocity;
-    }
-    if (this.x - this.r < 0) {
-      this.xVelocity = this.masterXvelocity;
-    }
-    if (this.y + this.r > height) {
-      this.yVelocity = -1 * this.masterYvelocity;
-    }
-    if (this.y - this.r < 0) {
-      this.yVelocity = this.masterYvelocity;
-    }
-  }
-
-  display() {
-    fill(this.color);
-    noStroke();
-    ellipse(this.x, this.y, this.r * 2);
-  }
+function keyReleased(){ 
+   yVelocity = 1;
 }
